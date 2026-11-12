@@ -2,7 +2,8 @@
 .NET client library for the [Fakturoid API v3](https://www.fakturoid.cz/api/v3).
 > Codes are wrapped as .net Shared Library. So you can [download](https://github.com/birko/FakturoidAPI.NET/releases) them and include into your programs or .dll libraries.
 
-> You can also use the NuGet package `Fakturoid` (not published yet)
+> The NuGet package `Fakturoid` is published to GitHub Packages on every GitHub release (not to nuget.org yet). Add the source with a personal access token that has `read:packages`:
+> `dotnet nuget add source https://nuget.pkg.github.com/birko/index.json --name birko --username <github user> --password <token>`
 
 Library uses System.Net.Http.HttpClient as communication layer and System.Text.Json for serialization and deserialization.
 

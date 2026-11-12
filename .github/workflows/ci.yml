@@ -2,10 +2,11 @@ name: CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
-  # Publishing a GitHub release with tag X.Y.Z (or vX.Y.Z) publishes version X.Y.Z to nuget.org.
+    branches: [ main ]
+  # Publishing a GitHub release with tag X.Y.Z (or vX.Y.Z) publishes version X.Y.Z to GitHub Packages
+  # (not to nuget.org yet).
   release:
     types: [ published ]
   workflow_dispatch:
@@ -53,16 +54,16 @@ jobs:
           name: nuget
           path: out/*.nupkg
 
-  # nuget.org Trusted Publishing: a GitHub OIDC token is exchanged for a 1 hour API key, no stored key.
-  # Requires a Trusted Publishing policy on nuget.org: owner "birko", repository "FakturoidAPI.NET",
-  # workflow file "ci.yml"; and secret NUGET_USER = nuget.org profile name (not the email).
+  # GitHub Packages (https://nuget.pkg.github.com/<owner>/index.json) with the workflow's GITHUB_TOKEN, no stored key.
+  # The package is linked to this repository through RepositoryUrl in Fakturoid.csproj.
+  # Consumers add the source with a personal access token that has read:packages.
   publish:
     needs: build
     if: github.event_name == 'release'
     runs-on: ubuntu-latest
     permissions:
       contents: write   # attach the .nupkg to the release
-      id-token: write   # OIDC token for nuget.org
+      packages: write   # push to GitHub Packages
 
     steps:
       - name: Download package
@@ -76,14 +77,8 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
-      - name: NuGet login (OIDC to temporary API key)
-        uses: NuGet/login@v1
-        id: login
-        with:
-          user: ${{ secrets.NUGET_USER }}
-
-      - name: Push package
-        run: dotnet nuget push "out/*.nupkg" --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+      - name: Push package to GitHub Packages
+        run: dotnet nuget push "out/*.nupkg" --api-key "${{ secrets.GITHUB_TOKEN }}" --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" --skip-duplicate
 
       - name: Attach package to the release
         env:
