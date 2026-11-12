@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <!-- The shared project keeps to C# 7.3 so that any project can import it. -->
+    <LangVersion>7.3</LangVersion>
+    <Authors>Birko</Authors>
+    <Company>Birko</Company>
+    <PackageId>Fakturoid</PackageId>
+    <PackageProjectUrl>https://github.com/birko/FakturoidAPI.NET</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/birko/FakturoidAPI.NET</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Description>.NET client library for the Fakturoid API v3 (OAuth 2 client credentials, CancellationToken on every call, rate limits, typed errors)</Description>
+    <Title>Fakturoid API Client</Title>
+    <Copyright>Copyright (c) 2026 František Bereň</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>fakturoid;api;invoice;.net</PackageTags>
+    <!-- AssemblyVersion and FileVersion are derived from Version; CI overrides it from the tag (v1.2.3 -> 1.2.3). -->
+    <Version>0.1.0</Version>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <Import Project="..\FakturoidAPI.NET\FakturoidAPI.NET.projitems" Label="Shared" />
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="8.0.6" />
+  </ItemGroup>
+
+</Project>

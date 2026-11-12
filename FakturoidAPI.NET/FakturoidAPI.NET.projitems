@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>7c1f3a52-4e0b-4d1a-9a5e-3b8f6c2d9e41</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Birko.Fakturoid</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Authentication\ClientCredentialsTokenProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Authentication\OAuthTokenProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ErrorMapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\Exceptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Fakturoid.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)InvoicePayments.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Invoices.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Json\FakturoidJson.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Page.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RateLimit.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Request\Invoice.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Request\InvoicePayment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Request\Subject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Request\Webhook.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RequestCompletedEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Response\Account.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Response\Invoice.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Response\InvoicePayment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Response\PdfDownload.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Response\Subject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Response\User.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Response\Webhook.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Secrets.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Subjects.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Users.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ValueLists\Constants.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WebhookReceiver.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Webhooks.cs" />
+  </ItemGroup>
+</Project>

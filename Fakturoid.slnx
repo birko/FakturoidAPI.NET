@@ -1,0 +1,15 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Beta" />
+    <BuildType Name="Debug" />
+    <BuildType Name="Release" />
+    <Platform Name="Any CPU" />
+  </Configurations>
+  <Project Path="Fakturoid.Tests/Fakturoid.Tests.csproj">
+    <BuildType Solution="Beta|*" Project="Release" />
+  </Project>
+  <Project Path="Fakturoid/Fakturoid.csproj">
+    <BuildType Solution="Beta|*" Project="Release" />
+  </Project>
+  <Project Path="FakturoidAPI.NET/FakturoidAPI.NET.shproj" />
+</Solution>

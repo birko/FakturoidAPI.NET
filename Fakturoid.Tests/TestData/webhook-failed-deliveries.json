@@ -1,0 +1,48 @@
+[
+  {
+    "id": 1,
+    "event_name": "invoice_created",
+    "idempotency_key": "019505e0-85b3-7a4b-a163-740753e8e21a",
+    "url": "https://www.example.com/webhook-endpoint",
+    "body": {
+      "body": {},
+      "created_at": "2026-02-06T14:42:14.674+01:00",
+      "event_name": "invoice_created",
+      "webhook_id": 6
+    },
+    "created_at": "2026-02-06T14:42:14.678+01:00",
+    "updated_at": "2026-02-06T14:55:10.794+01:00",
+    "deliveries": [
+      {
+        "id": 3,
+        "request_id": "7a5d586d-76a2-4da7-9d34-0214cd098faf",
+        "response_status": "ssl_error",
+        "response_content_type": null,
+        "response_body": null,
+        "started_at": "2026-02-06T14:46:04.019+01:00",
+        "finished_at": "2026-02-06T14:46:04.189+01:00",
+        "created_at": "2026-02-06T14:46:04.190+01:00"
+      },
+      {
+        "id": 2,
+        "request_id": "a14b20c8-e011-426d-aaf4-f0fe6bc5c63d",
+        "response_status": "ssl_error",
+        "response_content_type": null,
+        "response_body": null,
+        "started_at": "2026-02-06T14:43:34.081+01:00",
+        "finished_at": "2026-02-06T14:43:34.193+01:00",
+        "created_at": "2026-02-06T14:43:34.194+01:00"
+      },
+      {
+        "id": 1,
+        "request_id": "b005af3d-81c9-4562-b9e8-d4b6ac31a55d",
+        "response_status": "ssl_error",
+        "response_content_type": null,
+        "response_body": null,
+        "started_at": "2026-02-06T14:43:11.727+01:00",
+        "finished_at": "2026-02-06T14:43:11.916+01:00",
+        "created_at": "2026-02-06T14:43:11.924+01:00"
+      }
+    ]
+  }
+]

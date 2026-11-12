@@ -1,0 +1,92 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  # Publishing a GitHub release with tag X.Y.Z (or vX.Y.Z) publishes version X.Y.Z to nuget.org.
+  release:
+    types: [ published ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+
+      # Release 1.2.3 (or v1.2.3) builds and publishes version 1.2.3 (assembly, file and package version);
+      # other builds use <Version> from Fakturoid.csproj.
+      - name: Version
+        if: github.event_name == 'release'
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: echo "VERSION_ARG=-p:Version=${TAG#v}" >> "$GITHUB_ENV"
+
+      - name: Restore
+        run: dotnet restore Fakturoid.slnx
+
+      - name: Build
+        run: dotnet build Fakturoid.slnx --configuration Release --no-restore $VERSION_ARG
+
+      # Offline tests only: live tests are skipped unless FAKTUROID_LIVE=1 (credentials in ~/.fakturoid-test.env).
+      - name: Test
+        run: dotnet test Fakturoid.slnx --configuration Release --no-build
+
+      - name: Pack
+        run: dotnet pack Fakturoid/Fakturoid.csproj --configuration Release --no-build --output out $VERSION_ARG
+
+      - name: Upload package
+        uses: actions/upload-artifact@v7
+        with:
+          name: nuget
+          path: out/*.nupkg
+
+  # nuget.org Trusted Publishing: a GitHub OIDC token is exchanged for a 1 hour API key, no stored key.
+  # Requires a Trusted Publishing policy on nuget.org: owner "birko", repository "FakturoidAPI.NET",
+  # workflow file "ci.yml"; and secret NUGET_USER = nuget.org profile name (not the email).
+  publish:
+    needs: build
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # attach the .nupkg to the release
+      id-token: write   # OIDC token for nuget.org
+
+    steps:
+      - name: Download package
+        uses: actions/download-artifact@v8
+        with:
+          name: nuget
+          path: out
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+
+      - name: NuGet login (OIDC to temporary API key)
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
+      - name: Push package
+        run: dotnet nuget push "out/*.nupkg" --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+
+      - name: Attach package to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.release.tag_name }}
+        run: gh release upload "$TAG" out/*.nupkg --repo "$GITHUB_REPOSITORY" --clobber
