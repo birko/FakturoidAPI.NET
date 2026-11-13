@@ -17,6 +17,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)InvoicePayments.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Invoices.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Json\FakturoidJson.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NumberFormats.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Page.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RateLimit.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Request\Invoice.cs" />
@@ -27,6 +28,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Response\Account.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Response\Invoice.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Response\InvoicePayment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Response\NumberFormat.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Response\PdfDownload.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Response\Subject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Response\User.cs" />

@@ -47,6 +47,7 @@ var invoice = await fakturoid.Invoices.View(529, cancellationToken);
 * **Invoices** - instance of [`Invoices`](#invoices) class, description bellow
 * **InvoicePayments** - instance of [`InvoicePayments`](#invoicepayments) class, description bellow
 * **Webhooks** - instance of [`Webhooks`](#webhooks) class, description bellow
+* **NumberFormats** - instance of [`NumberFormats`](#numberformats) class, description bellow
 
 #### Public Methods
 * **Fakturoid(string clientId, string clientSecret, string accountSlug, string applicationName, string contactEmail, HttpClient httpClient = null)** - constructor for the Client Credentials flow. Client id and secret are in Fakturoid under Settings → User account. Without `httpClient` one shared `HttpClient` is used
@@ -162,6 +163,20 @@ Class that wrappes webhooks API calls. Webhooks are available in paid plans; wit
 * **Delete(int id)** - deletes a webhook
 * **FailedDeliveries(string failedDeliveriesUuid)** - events that failed all delivery attempts (kept 60 days)
 
+### NumberFormats
+Class that wrappes number formats API calls. Formats are read-only; they are created and changed in the web interface
+#### Public Methods
+* **ListInvoices()** - all unarchived number formats of invoices (`Id`, `Format`, `Preview`, `Default`, `CreatedAt`, `UpdatedAt`). Reads every page: the docs show no paging, but the endpoint has it
+
+An invoice with its own `Number` must fit the format it uses, otherwise Fakturoid answers 422 (`number: Číslo neodpovídá formátu čísla v nastavení`). Pick a format and pass its `Id` as `Request.Invoice.NumberFormatId`:
+* **NumberFormat.Fits(string number)**, static **NumberFormat.Fits(string format, string number)** - whether the number has the shape of the format: `#yyyy#` year, `#yy#` two-digit year, `#mm#` month 01-12, `#d…#` a counter of exactly that many digits, the rest literal. Checks only the shape, not the issue date or the next counter value
+```csharp
+var formats = await fakturoid.NumberFormats.ListInvoices(ct);
+var format = formats.FirstOrDefault(f => f.Fits("FV2026000002"));   // FV#yyyy##dddddd#
+invoice.Number = "FV2026000002";
+invoice.NumberFormatId = format?.Id;
+```
+
 #### Webhook receiver
 `Birko.Fakturoid.WebhookReceiver` helps the receiver of the deliveries. Fakturoid does not sign them: it sends the webhook's `auth_header` as the `Authorization` header and an `Idempotency-Key` (same across retries).
 * **VerifyAuthorization(string receivedAuthorizationHeader, string expectedAuthHeader)** - constant-time comparison; an empty expected value throws (a webhook without `auth_header` cannot be verified)
@@ -190,4 +205,4 @@ if (webhook.EventName == ValueLists.WebhookEvent.InvoicePaid) { var paid = webho
   Fakturoid has no sandbox. The read-only tests run with `FAKTUROID_LIVE=1`; the test that creates a subject, an invoice and a payment (and deletes them again) also needs `FAKTUROID_LIVE_WRITE=1`. Use a separate test account for it, never the production one.
 
 ## Not covered yet
-Invoice Messages, Bank Accounts, Number Formats, Events, Todos, Expenses, Expense Payments, Inbox Files, Inventory Items, Inventory Moves, Generators, Recurring Generators, invoice attachment download, the Authorization Code flow.
+Invoice Messages, Bank Accounts, Events, Todos, Expenses, Expense Payments, Inbox Files, Inventory Items, Inventory Moves, Generators, Recurring Generators, invoice attachment download, the Authorization Code flow.

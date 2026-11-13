@@ -35,6 +35,7 @@ namespace Birko.Fakturoid
         private Invoices invoices;
         private InvoicePayments invoicePayments;
         private Webhooks webhooks;
+        private NumberFormats numberFormats;
 
         // Client Credentials Flow: client id and secret from the Fakturoid user's Settings > User account.
         // applicationName and contactEmail form the mandatory User-Agent "applicationName (contactEmail)";
@@ -98,6 +99,8 @@ namespace Birko.Fakturoid
         public InvoicePayments InvoicePayments => invoicePayments ?? (invoicePayments = new InvoicePayments(this));
 
         public Webhooks Webhooks => webhooks ?? (webhooks = new Webhooks(this));
+
+        public NumberFormats NumberFormats => numberFormats ?? (numberFormats = new NumberFormats(this));
 
         internal string AccountPath(string path)
         {

@@ -98,6 +98,20 @@ namespace Fakturoid.Tests
         }
 
         [LiveFact]
+        public async Task InvoiceNumberFormatsFitTheirPreviews()
+        {
+            var client = LiveSettings.CreateClient();
+
+            var formats = await client.NumberFormats.ListInvoices();
+
+            formats.Count(f => f.Default).ShouldBe(1);
+            foreach (var format in formats)
+            {
+                format.Fits(format.Preview.Split(", ")[0]).ShouldBeTrue(format.Format);
+            }
+        }
+
+        [LiveFact]
         public async Task EventsNeverContainTheSecret()
         {
             var client = LiveSettings.CreateClient();
